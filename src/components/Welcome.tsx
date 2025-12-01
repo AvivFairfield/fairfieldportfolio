@@ -38,7 +38,7 @@ const setupTextHover = (
 	container: HTMLElement | null,
 	type: keyof FontWeights
 ): (() => void) | undefined => {
-	if (!container) return;
+	if (!container) return () => {};
 
 	const letters = container.querySelectorAll<HTMLSpanElement>("span");
 	const { min, max, default: base } = FONT_WEIGHTS[type];
@@ -62,7 +62,7 @@ const setupTextHover = (
 		letters.forEach((letter) => {
 			const { left: l, width: w } = letter.getBoundingClientRect();
 			const distance = Math.abs(mouseX - (l - left + w / 2));
-			const intensity = Math.exp(-(distance ** 2) / 2000);
+			const intensity = Math.exp(-(distance ** 2) / 1750);
 			animateLetter(letter, min + (max - min) * intensity);
 		});
 	};
@@ -88,8 +88,8 @@ const Welcome = (): JSX.Element => {
 		const subtitleCleanup = setupTextHover(subtitleRef.current, "subtitle");
 
 		return () => {
-			subtitleCleanup?.();
-			titleCleanup?.();
+			subtitleCleanup!();
+			titleCleanup!();
 		};
 	}, []);
 
