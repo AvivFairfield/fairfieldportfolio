@@ -3,8 +3,11 @@ import { dockApps } from "../constants";
 import { Tooltip } from "react-tooltip";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import useWindowStore from "../store/window";
+import type { WindowKey } from "../store/window";
 
 const Dock = (): JSX.Element => {
+	const { openWindow, closeWindow, windows } = useWindowStore();
 	const dockRef = useRef<HTMLDivElement | null>(null);
 
 	useGSAP(() => {
@@ -56,9 +59,25 @@ const Dock = (): JSX.Element => {
 		};
 	}, []);
 
-	const toggleApp = ({ id, canOpen }: { id: string; canOpen: boolean }) => {
+	const toggleApp = ({
+		id,
+		canOpen,
+	}: {
+		id: WindowKey;
+		canOpen: boolean;
+	}) => {
 		if (!canOpen) return;
-		// TODO: open / focus app by id
+
+		const win = windows[id];
+		if (!win) return; // TS safety
+
+		if (win.isOpen) {
+			closeWindow(id);
+		} else {
+			openWindow(id);
+		}
+
+		console.log(windows);
 	};
 
 	return (
@@ -77,7 +96,9 @@ const Dock = (): JSX.Element => {
 							data-tooltip-content={name}
 							data-tooltip-delay-show={150}
 							disabled={!canOpen}
-							onClick={() => toggleApp({ id, canOpen })}
+							onClick={() =>
+								toggleApp({ id: id as WindowKey, canOpen })
+							}
 						>
 							<img
 								src={`/images/${icon}`}
