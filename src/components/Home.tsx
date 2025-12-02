@@ -1,5 +1,5 @@
 // Home.tsx
-import React, { type FC } from "react";
+import { type FC } from "react";
 import clsx from "clsx";
 import { locations } from "../constants";
 import { useGSAP } from "@gsap/react";

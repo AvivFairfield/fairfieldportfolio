@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import { type FC } from "react";
 import useWindowStore, { type WindowKey } from "../store/window";
 
 type WindowControlsProps = {

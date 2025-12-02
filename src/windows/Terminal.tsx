@@ -1,4 +1,3 @@
-import React from "react";
 import WindowWrapper from "../hoc/WindowWrapper";
 import { techStack } from "../constants";
 import { Check, Flag } from "lucide-react";
