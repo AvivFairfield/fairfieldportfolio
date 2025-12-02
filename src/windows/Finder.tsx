@@ -36,23 +36,33 @@ const Finder: React.FC = () => {
 		));
 
 	const openItem = (item: LocationItem) => {
-		if ("fileType" in item && item.fileType === "pdf")
+		console.log("Opening item:", item);
+
+		if ("fileType" in item && item.fileType === "pdf") {
 			return openWindow("resume");
-		if (item.kind === "folder")
+		}
+
+		if (item.kind === "folder") {
 			return setActiveLocation(item as unknown as Location);
+		}
+
 		if (
 			"fileType" in item &&
 			["fig", "url"].includes(item.fileType) &&
 			"href" in item &&
 			typeof item.href === "string"
-		)
-			return window.open(item.href, "_blank");
-
-		if (
-			"fileType" in item &&
-			(item.fileType === "txtfile" || item.fileType === "imgfile")
 		) {
-			openWindow(item.fileType, item);
+			return window.open(item.href, "_blank");
+		}
+
+		if ("fileType" in item) {
+			if (item.fileType === "txt" || item.fileType === "txtfile") {
+				return openWindow("txtfile", item);
+			}
+
+			if (item.fileType === "img" || item.fileType === "imgfile") {
+				return openWindow("imgfile", item);
+			}
 		}
 	};
 
